@@ -36,8 +36,8 @@ resource "aws_route_table_association" "public_assoc" {
   route_table_id = aws_route_table.public.id
 }
 
-resource "aws_security_group" "web_sg" {
-  name        = "dev-web-sg"
+resource "aws_security_group" "web" {
+  name        = "${var.environment}-web-sg"
   description = "Allow SSH and HTTP"
   vpc_id      = aws_vpc.main.id
 
@@ -46,7 +46,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.ssh_cidr]
+    cidr_blocks = [var.allowed_ssh_cidr]
   }
 
   ingress {
@@ -64,5 +64,5 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { Name = "dev-web-sg" }
+  tags = { Name = "${var.environment}-web-sg" }
 }

@@ -3,9 +3,10 @@ provider "aws" {
 }
 
 module "network" {
-  source     = "../../modules/network"
-  aws_region = var.aws_region
-  ssh_cidr   = var.ssh_cidr
+  source           = "../../modules/network"
+  environment      = "dev"
+  allowed_ssh_cidr = var.allowed_ssh_cidr
+  aws_region       = var.aws_region
 }
 
 module "web" {
