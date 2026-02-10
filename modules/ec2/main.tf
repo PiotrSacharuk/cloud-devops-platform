@@ -8,15 +8,9 @@ resource "aws_instance" "this" {
 
   tags = { Name = "dev-web" }
 
-  user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              amazon-linux-extras install -y nginx1
-              yum install -y python3 git
-              echo "It works" > /var/www/html/index.html
-              systemctl enable nginx
-              systemctl start nginx
-              EOF
+  user_data = templatefile("${path.module}/bootstrap.sh", {
+    environment = var.environment
+  })
 }
 
 resource "aws_key_pair" "dev_key" {
