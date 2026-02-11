@@ -6,7 +6,12 @@ resource "aws_instance" "this" {
   vpc_security_group_ids = [var.security_group_id]
   key_name               = aws_key_pair.dev_key.key_name
 
-  tags = { Name = "dev-web" }
+  tags = merge(
+    var.common_tags,
+    {
+      Name = "${var.environment}-web"
+    }
+  )
 
   user_data = templatefile("${path.module}/bootstrap.sh", {
     environment = var.environment

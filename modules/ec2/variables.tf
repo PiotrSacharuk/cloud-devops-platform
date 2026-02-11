@@ -8,3 +8,7 @@ variable "environment" {
   description = "Environment name (dev, staging, prod)"
   type        = string
 }
+
+variable "common_tags" {
+  type = map(string)
+}

@@ -22,3 +22,7 @@ variable "allowed_ssh_cidr" {
 variable "environment" {
   type = string
 }
+
+variable "common_tags" {
+  type = map(string)
+}
