@@ -1,23 +1,17 @@
 # Cloud / Terraform Learning
 
-
 ## EC2 Hardening (Security + Operability)
-
 
 ### 🎯 Goal
 
-
 Harden the EC2 baseline and improve operability by introducing:
-
 
 * Standardized resource tagging (`common_tags`)
 * Enforced IMDSv2 on EC2 (token-required metadata)
 * Encrypted root EBS volume
 * IAM Role + Instance Profile for SSM Session Manager access
 
-
 ### 🧩 Scope
-
 
 * One environment (`envs/dev`) using modules (`modules/network`, `modules/ec2`)
 * EC2 bootstrapping extracted into a script and rendered via `templatefile()`
@@ -27,9 +21,7 @@ Harden the EC2 baseline and improve operability by introducing:
 * Operability hardening:
   * SSM Session Manager enabled via IAM role + instance profile
 
-
 ### 🛠 Key Steps
-
 
 1. Introduced standardized tags in the environment layer:
    * `locals { common_tags = { Project, Environment, ManagedBy } }`
@@ -60,9 +52,7 @@ Harden the EC2 baseline and improve operability by introducing:
 
    sudo dpkg -i session-manager-plugin.deb
 
-
 ### 🧪 Validation
-
 
 * `terraform plan` and `terraform apply` complete successfully
 * EC2 boots reliably with the extracted bootstrap script
@@ -81,15 +71,12 @@ Harden the EC2 baseline and improve operability by introducing:
 
 ### 📄 Files Introduced / Updated
 
-
 * `modules/ec2/bootstrap.sh` – extracted bootstrap logic (rendered by `templatefile()`)
 * `modules/ec2/*.tf` – EC2 hardening: IMDSv2, EBS encryption, IAM profile attachment
 * `envs/dev/main.tf` – `common_tags` + module wiring
 * `docs/04_ec2_hardening.md` – this document
 
-
 ### ✅ Outcome
-
 
 * Environment-aware Terraform setup with consistent tagging
 * Hardened EC2 configuration (IMDSv2 + encrypted root volume)
