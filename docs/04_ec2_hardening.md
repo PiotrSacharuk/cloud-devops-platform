@@ -48,6 +48,17 @@ Harden the EC2 baseline and improve operability by introducing:
    * Added `aws_iam_role`, `aws_iam_instance_profile`, and `aws_iam_role_policy_attachment`
    * Verified the instance appears in SSM (`aws ssm describe-instance-information`)
    * Installed the Session Manager plugin locally and validated session connectivity
+6. Installed the Session Manager plugin (client-side requirement):
+   * Session Manager sessions started via AWS CLI require the Session Manager plugin on the client machine.
+   * On Debian/Ubuntu the installation uses a `.deb` package and `dpkg`.
+
+   Example (Ubuntu/Debian):
+
+   ```bash
+   curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" \
+     -o "session-manager-plugin.deb"
+
+   sudo dpkg -i session-manager-plugin.deb
 
 
 ### 🧪 Validation
@@ -59,6 +70,14 @@ Harden the EC2 baseline and improve operability by introducing:
 * Root EBS volume encryption is enabled
 * The instance registers in SSM and can be targeted for Session Manager sessions
 
+### 🧪 Validation (SSM)
+
+* Verified instance is registered in SSM:
+  * `aws ssm describe-instance-information`
+* Verified client-side plugin is installed (required for interactive sessions):
+  * `session-manager-plugin --version`
+* Started an interactive session:
+  * `aws ssm start-session --target <instance-id>`
 
 ### 📄 Files Introduced / Updated
 
