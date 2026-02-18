@@ -6,6 +6,11 @@ resource "aws_instance" "this" {
   vpc_security_group_ids = [var.security_group_id]
   key_name               = aws_key_pair.dev_key.key_name
 
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+
   tags = merge(
     var.common_tags,
     {
