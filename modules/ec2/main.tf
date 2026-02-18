@@ -4,7 +4,7 @@ resource "aws_instance" "this" {
   subnet_id     = var.subnet_id
 
   vpc_security_group_ids = [var.security_group_id]
-  key_name               = aws_key_pair.dev_key.key_name
+  key_name               = var.enable_ssh ? aws_key_pair.this[0].key_name : null
 
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
@@ -29,9 +29,10 @@ resource "aws_instance" "this" {
   })
 }
 
-resource "aws_key_pair" "dev_key" {
+resource "aws_key_pair" "this" {
+  count      = var.enable_ssh ? 1 : 0
   key_name   = var.key_name
-  public_key = file("~/.ssh/devops-dev.pub")
+  public_key = file(pathexpand(var.public_key_path))
 }
 
 resource "aws_iam_role" "ec2_role" {
