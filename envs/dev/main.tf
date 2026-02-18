@@ -16,6 +16,7 @@ module "network" {
   common_tags      = local.common_tags
   allowed_ssh_cidr = var.allowed_ssh_cidr
   aws_region       = var.aws_region
+  enable_ssh       = true
 }
 
 module "web" {
@@ -28,5 +29,5 @@ module "web" {
   security_group_id = module.network.security_group_id
   key_name          = var.key_name
   public_key_path   = var.public_key_path
-  enable_ssh        = var.enable_ssh
+  enable_ssh        = true
 }
