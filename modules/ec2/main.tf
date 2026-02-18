@@ -1,10 +1,20 @@
+locals {
+  public_key_material = var.enable_ssh ? file(pathexpand(var.public_key_path)) : "unused"
+}
+
+resource "aws_key_pair" "this" {
+  count      = var.enable_ssh ? 1 : 0
+  key_name   = var.key_name
+  public_key = local.public_key_material
+}
+
 resource "aws_instance" "this" {
   ami           = var.ami_id
   instance_type = var.instance_type
   subnet_id     = var.subnet_id
 
   vpc_security_group_ids = [var.security_group_id]
-  key_name               = var.enable_ssh ? aws_key_pair.this[0].key_name : null
+  key_name               = var.enable_ssh ? var.key_name : null
 
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
@@ -27,12 +37,6 @@ resource "aws_instance" "this" {
   user_data = templatefile("${path.module}/bootstrap.sh", {
     environment = var.environment
   })
-}
-
-resource "aws_key_pair" "this" {
-  count      = var.enable_ssh ? 1 : 0
-  key_name   = var.key_name
-  public_key = file(pathexpand(var.public_key_path))
 }
 
 resource "aws_iam_role" "ec2_role" {

@@ -26,3 +26,9 @@ variable "environment" {
 variable "common_tags" {
   type = map(string)
 }
+
+variable "enable_ssh" {
+  description = "Whether to allow inbound SSH (22) to the web security group"
+  type        = bool
+  default     = false
+}
