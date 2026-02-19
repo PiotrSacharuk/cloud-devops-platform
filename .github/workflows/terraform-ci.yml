@@ -72,6 +72,9 @@ jobs:
     name: plan (envs/dev)
     runs-on: ubuntu-latest
     needs: [fmt, validate]
+    concurrency:
+      group: terraform-plan-envs-dev
+      cancel-in-progress: true
     permissions:
       contents: read
       id-token: write
@@ -87,10 +90,10 @@ jobs:
           role-to-assume: arn:aws:iam::864058201359:role/github-actions-terraform-role
           aws-region: us-east-1
       - name: Terraform init
-        run: terraform init
+        run: terraform init -input=false -reconfigure
         working-directory: envs/dev
       - name: Terraform plan
-        run: terraform plan -no-color -lock-timeout=5m -out=tfplan
+        run: terraform plan -input=false -no-color -lock-timeout=5m -out=tfplan
         working-directory: envs/dev
       - name: Render plan
         run: terraform show -no-color tfplan > plan.txt

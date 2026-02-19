@@ -29,5 +29,5 @@ module "web" {
   security_group_id = module.network.security_group_id
   key_name          = var.key_name
   public_key_path   = var.public_key_path
-  enable_ssh        = true
+  enable_ssh        = var.enable_ssh
 }

@@ -6,4 +6,6 @@ instance_type = "t3.micro"
 
 # CI does not need SSH access, so we disable it here
 enable_ssh       = false
+key_name         = ""
+public_key_path  = ""
 allowed_ssh_cidr = "127.0.0.1/32"
