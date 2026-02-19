@@ -43,3 +43,35 @@ jobs:
       - name: terraform validate
         run: terraform validate
         working-directory: ${{ matrix.dir }}
+
+  report:
+    name: report (PR comment)
+    runs-on: ubuntu-latest
+    needs: [fmt, validate]
+    if: always()
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Build report
+        id: report
+        run: |
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "## Terraform CI Report" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "- fmt **${{ needs.fmt.result }}**" >> $GITHUB_OUTPUT
+          echo "- validate: **${{ needs.validate.result }}**" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `${{ toJSON(steps.report.outputs.body) }}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body,
+            });
