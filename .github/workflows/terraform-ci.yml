@@ -76,6 +76,8 @@ jobs:
       contents: read
       id-token: write
       pull-requests: write
+    env:
+      TF_INPUT: "0"
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
@@ -85,7 +87,7 @@ jobs:
           role-to-assume: arn:aws:iam::864058201359:role/github-actions-terraform-role
           aws-region: us-east-1
       - name: Terraform init
-        run: terraform init -input=false
+        run: terraform init
         working-directory: envs/dev
       - name: Terraform plan
         run: terraform plan -no-color -lock-timeout=5m -out=tfplan

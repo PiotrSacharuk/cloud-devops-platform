@@ -3,4 +3,5 @@ terraform.tfstate
 terraform.tfstate.backup
 *.tfplan
 *.tfvars
+!*.auto.tfvars
 tfplan
