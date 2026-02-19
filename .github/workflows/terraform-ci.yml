@@ -1,0 +1,45 @@
+name: Terraform CI
+
+on:
+  pull_request:
+    paths:
+      - "**.tf"
+      - "**.hcl"
+      - ".github/workflows/terraform-ci.yml"
+  push:
+    branches:
+      - master
+    paths:
+      - "**.tf"
+      - "**.hcl"
+      - ".github/workflows/terraform-ci.yml"
+
+jobs:
+  fmt:
+    name: fmt (recursive)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: terraform fmt
+        run: terraform fmt -recursive -check
+
+  validate:
+    name: validate (${{ matrix.dir }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir:
+          - envs/dev
+          - envs/staging
+          - envs/prod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: terraform init (no backend)
+        run: terraform init -backend=false
+        working-directory: ${{ matrix.dir }}
+      - name: terraform validate
+        run: terraform validate
+        working-directory: ${{ matrix.dir }}
