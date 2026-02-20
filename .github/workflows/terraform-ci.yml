@@ -68,17 +68,25 @@ jobs:
               body: body,
             });
 
-  plan-dev:
-    name: plan (envs/dev)
+  plan:
+    name: plan (${{ matrix.env }})
     runs-on: ubuntu-latest
     needs: [fmt, validate]
+
+    strategy:
+      fail-fast: false
+      matrix:
+        env: [dev, staging, prod]
+
     concurrency:
-      group: terraform-plan-envs-dev
+      group: terraform-plan-envs-${{ matrix.env }}
       cancel-in-progress: true
+
     permissions:
       contents: read
       id-token: write
       pull-requests: write
+
     env:
       TF_INPUT: "0"
     steps:
@@ -91,15 +99,15 @@ jobs:
           aws-region: us-east-1
       - name: Terraform init
         run: terraform init -input=false -reconfigure
-        working-directory: envs/dev
+        working-directory: envs/${{ matrix.env }}
       - name: Terraform plan
         run: terraform plan -input=false -no-color -lock-timeout=5m -out=tfplan
-        working-directory: envs/dev
+        working-directory: envs/${{ matrix.env }}
       - name: Render plan
         run: terraform show -no-color tfplan > plan.txt
-        working-directory: envs/dev
+        working-directory: envs/${{ matrix.env }}
       - name: Upload plan
         uses: actions/upload-artifact@v4
         with:
-          name: plan-envs-dev
-          path: envs/dev/plan.txt
+          name: plan-envs-${{ matrix.env }}
+          path: envs/${{ matrix.env }}/plan.txt
