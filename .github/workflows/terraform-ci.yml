@@ -95,10 +95,16 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::864058201359:role/github-actions-terraform-role
-          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
       - name: Terraform init
-        run: terraform init -input=false -reconfigure
+        run: |
+          terraform init -input=false -reconfigure \
+            -backend-config="bucket=${{ secrets.TF_BACKEND_BUCKET }}" \
+            -backend-config="region=${{ vars.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ secrets.TF_BACKEND_DYNAMODB_TABLE }}" \
+            -backend-config="key=cloud-devops-platform/${{ matrix.env }}/terraform.tfstate" \
+            -backend-config="encrypt=true"
         working-directory: envs/${{ matrix.env }}
       - name: Terraform plan
         run: terraform plan -input=false -no-color -lock-timeout=5m -out=tfplan
