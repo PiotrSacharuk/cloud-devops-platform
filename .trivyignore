@@ -1,0 +1,8 @@
+# Ignore VPC Flow Logs requirement (generates CloudWatch costs)
+AVD-AWS-0178
+
+# Ignore requires KMS Customer Managed Keys for EBS (we use default AWS managed encryption to save costs)
+AVD-AWS-0026
+
+# Ignore requiring metadata token hop limit to be 1 (SSM sometimes requires hop limit 2, and we already enforced IMDSv2)
+AVD-AWS-0028

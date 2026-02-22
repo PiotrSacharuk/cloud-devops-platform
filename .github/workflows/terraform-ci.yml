@@ -40,10 +40,27 @@ jobs:
         run: tflint --config "$GITHUB_WORKSPACE/.tflint.hcl" -f compact
         working-directory: ${{ matrix.dir }}
 
+  trivy:
+    name: trivy (security scan)
+    runs-on: ubuntu-latest
+    needs: [tflint]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Trivy vulnerability scanner in IaC mode
+        uses: aquasecurity/trivy-action@0.34.1
+        with:
+          scan-type: config
+          hide-progress: false
+          format: table
+          scan-ref: .
+          exit-code: "1"
+          severity: "HIGH,CRITICAL"
+          trivyignores: .trivyignore
+
   validate:
     name: validate (${{ matrix.dir }})
     runs-on: ubuntu-latest
-    needs: [tflint]
+    needs: [trivy]
     strategy:
       fail-fast: false
       matrix:
@@ -114,7 +131,7 @@ jobs:
   report:
     name: report (PR comment)
     runs-on: ubuntu-latest
-    needs: [fmt, tflint, validate, plan]
+    needs: [fmt, tflint, trivy, validate, plan]
     if: always()
     permissions:
       pull-requests: write
@@ -127,6 +144,7 @@ jobs:
           echo "" >> $GITHUB_OUTPUT
           echo "- fmt **${{ needs.fmt.result }}**" >> $GITHUB_OUTPUT
           echo "- tflint: **${{ needs.tflint.result }}**" >> $GITHUB_OUTPUT
+          echo "- trivy: **${{ needs.trivy.result }}**" >> $GITHUB_OUTPUT
           echo "- validate: **${{ needs.validate.result }}**" >> $GITHUB_OUTPUT
           echo "- plan: **${{ needs.plan.result }}**" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
