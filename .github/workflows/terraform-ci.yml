@@ -16,6 +16,30 @@ jobs:
       - name: terraform fmt
         run: terraform fmt -recursive -check
 
+  tflint:
+    name: tflint (${{ matrix.dir }})
+    runs-on: ubuntu-latest
+    needs: [fmt]
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: [envs/dev, envs/staging, envs/prod]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v6
+        with:
+          tflint_version: v0.61.0
+          cache: true
+          tflint_config_path: .tflint.hcl
+      - name: Init TFLint (plugins)
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run TFLint
+        run: tflint --config "$GITHUB_WORKSPACE/.tflint.hcl" -f compact
+        working-directory: ${{ matrix.dir }}
+
   validate:
     name: validate (${{ matrix.dir }})
     runs-on: ubuntu-latest
