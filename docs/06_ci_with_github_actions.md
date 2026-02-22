@@ -1,8 +1,6 @@
 # Cloud / Terraform Learning
 
-
 ## CI for Terraform (fmt, validate, plan with GitHub Actions)
-
 
 ### 🎯 Goal
 
@@ -12,9 +10,7 @@ Introduce a lightweight but robust CI stage for the Terraform project that runs 
 * Validate configuration for all environments (`dev`, `staging`, `prod`) without touching real AWS services.
 * Generate a safe `terraform plan` in CI using AWS OIDC, real remote state (S3 + DynamoDB), and no static AWS keys.
 
-
-
-### 🧩 Scope
+## 🧩 Scope
 
 * Repository:
   * Single Terraform codebase with multiple environments:
@@ -34,9 +30,7 @@ Introduce a lightweight but robust CI stage for the Terraform project that runs 
   * Static configuration validation (`validate`).
   * Read-only planning (`plan`) per environment.
 
-
-
-### 🛠 Key Steps (Day 6 – fmt + validate)
+### 🛠 Key Steps (fmt + validate)
 
 1. Added a GitHub Actions workflow for Terraform quality checks:
    * `hashicorp/setup-terraform@v3` used to install the Terraform CLI. [web:431]
@@ -56,9 +50,7 @@ Introduce a lightweight but robust CI stage for the Terraform project that runs 
    * CI jobs are designed to be used as required status checks before merging.
    * Checks: formatting + validation for all environments.
 
-
-
-### 🛠 Key Steps (Day 7 – plan with AWS OIDC)
+### 🛠 Key Steps (plan with AWS OIDC)
 
 1. Configured AWS OIDC for GitHub Actions:
    * Created an IAM Identity Provider for `https://token.actions.githubusercontent.com` with audience `sts.amazonaws.com`. [web:359][web:321]
@@ -105,8 +97,6 @@ Introduce a lightweight but robust CI stage for the Terraform project that runs 
    * Binary plan files (`tfplan`) and state (`terraform.tfstate*`) are ignored via `.gitignore`.
    * Only `plan.txt` (rendered text) is uploaded as a CI artifact, not the binary plan itself.
 
-
-
 ### 🧪 Validation
 
 * CI:
@@ -123,8 +113,6 @@ Introduce a lightweight but robust CI stage for the Terraform project that runs 
 * Locking:
   * Verified that plans can run sequentially without “Error acquiring the state lock” once concurrency is enabled and old locks are cleaned up using `terraform force-unlock` when necessary. [web:413][web:415]
 
-
-
 ### 📄 Files Introduced / Updated
 
 * `.github/workflows/terraform-ci.yml`
@@ -139,8 +127,6 @@ Introduce a lightweight but robust CI stage for the Terraform project that runs 
   * Remain compatible with both local SSH-enabled flows and CI SSH-disabled flows.
 * `.gitignore`:
   * Confirmed ignore rules for `tfplan`, `*.tfplan`, `.terraform/`, and `terraform.tfstate*` remain in effect.
-
-
 
 ### ✅ Outcome
 
