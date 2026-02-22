@@ -6,3 +6,9 @@ AVD-AWS-0026
 
 # Ignore requiring metadata token hop limit to be 1 (SSM sometimes requires hop limit 2, and we already enforced IMDSv2)
 AVD-AWS-0028
+
+# Ignore unrestricted egress (required for yum update / bootstrapping on Free Tier without complex VPC endpoints)
+AVD-AWS-0104
+
+# Ignore public IP association (we use public subnets directly to avoid NAT Gateway/ALB costs on Free Tier)
+AVD-AWS-0164
