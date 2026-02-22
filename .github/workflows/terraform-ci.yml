@@ -114,7 +114,7 @@ jobs:
   report:
     name: report (PR comment)
     runs-on: ubuntu-latest
-    needs: [plan]
+    needs: [fmt, tflint, validate, plan]
     if: always()
     permissions:
       pull-requests: write
