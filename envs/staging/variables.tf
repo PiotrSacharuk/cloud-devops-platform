@@ -1,5 +1,6 @@
 variable "aws_region" {
-  type = string
+  description = "AWS region to deploy resources in (e.g. us-east-1)"
+  type        = string
 }
 
 variable "allowed_ssh_cidr" {
@@ -8,13 +9,16 @@ variable "allowed_ssh_cidr" {
 }
 
 variable "ami_id" {
-  type = string
+  description = "AMI ID for EC2 instance"
+  type        = string
 }
 
 variable "instance_type" {
-  type = string
+  description = "EC2 instance type (e.g. t2.micro)"
+  type        = string
 }
 
 variable "environment" {
-  type = string
+  description = "Environment name (dev, staging, prod)"
+  type        = string
 }

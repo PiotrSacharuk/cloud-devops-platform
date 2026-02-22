@@ -1,7 +1,18 @@
-variable "instance_type" {}
-variable "subnet_id" {}
-variable "security_group_id" {}
-variable "ami_id" {}
+variable "instance_type" {
+  type = string
+}
+
+variable "subnet_id" {
+  type = string
+}
+
+variable "security_group_id" {
+  type = string
+}
+
+variable "ami_id" {
+  type = string
+}
 
 variable "environment" {
   description = "Environment name (dev, staging, prod)"
