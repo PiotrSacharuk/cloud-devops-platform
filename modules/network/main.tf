@@ -215,6 +215,14 @@ resource "aws_instance" "nat" {
 
   source_dest_check = false
 
+  root_block_device {
+    encrypted = true
+  }
+
+  metadata_options {
+    http_tokens = "required"
+  }
+
   user_data = <<-EOF
               #!/bin/bash
               echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.d/custom-ip-forwarding.conf
