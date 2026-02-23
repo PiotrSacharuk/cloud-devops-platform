@@ -9,6 +9,12 @@ variable "public_cidr" {
   default     = "10.0.1.0/24"
 }
 
+variable "private_cidr" {
+  description = "CIDR block for the private subnet"
+  type        = string
+  default     = "10.0.2.0/24"
+}
+
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
