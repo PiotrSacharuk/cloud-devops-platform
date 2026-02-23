@@ -1,20 +1,24 @@
 variable "aws_region" {
-  type = string
+  description = "AWS region where resources will be created"
+  type        = string
 }
 
 variable "public_cidr" {
-  type    = string
-  default = "10.0.1.0/24"
+  description = "CIDR block for the public subnet"
+  type        = string
+  default     = "10.0.1.0/24"
 }
 
 variable "vpc_cidr" {
-  type    = string
-  default = "10.0.0.0/16"
+  description = "CIDR block for the VPC"
+  type        = string
+  default     = "10.0.0.0/16"
 }
 
 variable "availability_zone" {
-  type    = string
-  default = "us-east-1a"
+  description = "Availability zone for the subnet"
+  type        = string
+  default     = "us-east-1a"
 }
 
 variable "allowed_ssh_cidr" {
@@ -23,11 +27,13 @@ variable "allowed_ssh_cidr" {
 }
 
 variable "environment" {
-  type = string
+  description = "Environment name (dev, staging, prod)"
+  type        = string
 }
 
 variable "common_tags" {
-  type = map(string)
+  description = "Common tags to apply to all resources"
+  type        = map(string)
 }
 
 variable "enable_ssh" {

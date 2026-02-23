@@ -1,17 +1,21 @@
 variable "instance_type" {
-  type = string
+  description = "EC2 instance type (e.g. t2.micro)"
+  type        = string
 }
 
 variable "subnet_id" {
-  type = string
+  description = "Subnet ID where the EC2 instance will be launched"
+  type        = string
 }
 
 variable "security_group_id" {
-  type = string
+  description = "Security group ID to attach to the EC2 instance"
+  type        = string
 }
 
 variable "ami_id" {
-  type = string
+  description = "Amazon Machine Image (AMI) ID for the EC2 instance"
+  type        = string
 }
 
 variable "environment" {
@@ -20,18 +24,21 @@ variable "environment" {
 }
 
 variable "common_tags" {
-  type = map(string)
+  description = "Common tags to apply to all resources"
+  type        = map(string)
 }
 
 variable "enable_ssh" {
-  type    = bool
-  default = false
+  description = "Whether to enable SSH access to the EC2 instance"
+  type        = bool
+  default     = false
 }
 
 variable "key_name" {
-  type     = string
-  default  = null
-  nullable = true
+  description = "Name of the EC2 key pair to use for SSH access (required when enable_ssh=true)"
+  type        = string
+  default     = null
+  nullable    = true
 
   validation {
     condition     = var.enable_ssh ? var.key_name != null && var.key_name != 0 : true
