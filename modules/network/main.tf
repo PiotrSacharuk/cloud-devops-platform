@@ -28,7 +28,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_cidr
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   availability_zone       = var.availability_zone
   tags = merge(
     var.common_tags,
@@ -212,6 +212,8 @@ resource "aws_instance" "nat" {
   subnet_id     = aws_subnet.public.id
 
   vpc_security_group_ids = [aws_security_group.nat_sg.id]
+
+  associate_public_ip_address = true
 
   source_dest_check = false
 

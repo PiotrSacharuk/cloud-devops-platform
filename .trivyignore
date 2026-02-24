@@ -12,6 +12,3 @@ AVD-AWS-0104
 
 # Ignore unrestricted ingress on port 80 (Accepted Risk: We are hosting a public web service without a Load Balancer to stay on Free Tier)
 AVD-AWS-0107
-
-# Ignore public IP association (we use public subnets directly to avoid NAT Gateway/ALB costs on Free Tier)
-AVD-AWS-0164
