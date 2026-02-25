@@ -1,5 +1,6 @@
 resource "aws_sns_topic" "billing_alerts" {
-  name = "billing-alerts-topic"
+  name              = "billing-alerts-topic"
+  kms_master_key_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic_subscription" "billing_alerts_email" {
