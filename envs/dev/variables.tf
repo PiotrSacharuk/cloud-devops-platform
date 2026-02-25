@@ -37,14 +37,3 @@ variable "environment" {
   description = "Environment name (dev, staging, prod)"
   type        = string
 }
-
-variable "alert_email" {
-  description = "Email address to receive billing alerts"
-  type        = string
-}
-
-variable "billing_threshold" {
-  description = "Billing threshold in USD that triggers the alert"
-  type        = string
-  default     = "1.0"
-}

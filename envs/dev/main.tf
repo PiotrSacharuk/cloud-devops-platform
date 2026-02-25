@@ -42,9 +42,3 @@ module "web" {
   public_key_path   = var.public_key_path
   enable_ssh        = var.enable_ssh
 }
-
-module "billing_alarm" {
-  source            = "../../modules/billing_alarm"
-  alert_email       = var.alert_email
-  billing_threshold = var.billing_threshold
-}

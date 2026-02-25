@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dir: [envs/dev, envs/staging, envs/prod]
+        dir: [envs/global, envs/dev, envs/staging, envs/prod]
     steps:
       - uses: actions/checkout@v4
       - name: Setup TFLint
@@ -64,10 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dir:
-          - envs/dev
-          - envs/staging
-          - envs/prod
+        dir: [envs/global, envs/dev, envs/staging, envs/prod]
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
@@ -86,7 +83,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        env: [dev, staging, prod]
+        env: [global, dev, staging, prod]
 
     concurrency:
       group: terraform-plan-envs-${{ matrix.env }}

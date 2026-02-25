@@ -9,5 +9,3 @@ enable_ssh       = false
 key_name         = ""
 public_key_path  = ""
 allowed_ssh_cidr = "127.0.0.1/32"
-
-alert_email = "ci-dummy@example.com"
