@@ -1,24 +1,9 @@
-terraform {
-  required_version = ">= 1.14.0"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.33.0"
-    }
-  }
-}
-
 locals {
   common_tags = {
     Project     = "cloud-devops-platform"
     Environment = var.environment
     ManagedBy   = "Terraform"
   }
-}
-
-provider "aws" {
-  region = var.aws_region
 }
 
 module "network" {

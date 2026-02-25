@@ -1,18 +1,3 @@
-terraform {
-  required_version = ">= 1.14.0"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.33.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = var.aws_region
-}
-
 module "billing_alarm" {
   source            = "../../modules/billing_alarm"
   alert_email       = var.alert_email
