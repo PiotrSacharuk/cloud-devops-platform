@@ -33,7 +33,7 @@ Enhance the Terraform CI pipeline by introducing **static code analysis** using 
    * Ensured it runs recursively across all environment directories.
 
 3. **Resolving Technical Debt:**
-   * **Versioning:** Added `required_version = ">= 1.14.0"` and `required_providers` with `version = "~> 6.31.0"` to all `main.tf` files to satisfy TFLint and align with existing `.terraform.lock.hcl` files.
+   * **Versioning:** Added `required_version = ">= 1.14.0"` and `required_providers` with `version = "~> 6.33.0"` to all `main.tf` files to satisfy TFLint and align with existing `.terraform.lock.hcl` files.
    * **Typing:** Added explicit `type` definitions (e.g., `string`, `bool`) to all variables in `variables.tf`.
    * **Documentation:** Added `description` fields to every variable and output across the entire codebase.
 
