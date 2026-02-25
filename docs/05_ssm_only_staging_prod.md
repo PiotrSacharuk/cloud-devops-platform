@@ -33,7 +33,7 @@ This day focuses on removing inbound SSH exposure (port 22) where it should not 
      * `cloud-devops-platform/staging/terraform.tfstate`
      * `cloud-devops-platform/prod/terraform.tfstate`
    * Reinitialized backends with:
-     * `terraform init -migrate-state -reconfigure`
+     * `terraform init -reconfigure`
 
 2. Introduced an environment-driven SSH toggle (`enable_ssh`):
    * Goal: the same modules can support:
