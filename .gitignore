@@ -3,6 +3,6 @@ terraform.tfstate
 terraform.tfstate.backup
 *.tfplan
 *.tfvars
-!*.auto.tfvars
+!ci.tfvars
 tfplan
 backend-config.local.hcl
