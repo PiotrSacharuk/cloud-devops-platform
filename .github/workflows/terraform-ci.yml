@@ -75,6 +75,32 @@ jobs:
         run: terraform validate
         working-directory: ${{ matrix.dir }}
 
+  infracost:
+    name: infracost (cost estimate)
+    runs-on: ubuntu-latest
+    needs: [validate]
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Infracost
+        uses: infracost/actions/setup@v3
+        with:
+          api-key: ${{ secrets.INFRACOST_API_KEY }}
+      - name: Generate Infracost cost estimate baseline
+        run: |
+          infracost breakdown --path . \
+                              --format json \
+                              --out-file infracost.json
+      - name: Post Infracost comment
+        run: |
+          infracost comment github --path=infracost.json \
+                                  --repo=${{ github.repository }} \
+                                  --github-token=${{ secrets.GITHUB_TOKEN }} \
+                                  --pull-request=${{ github.event.pull_request.number }} \
+                                  --behavior=update
+
   plan:
     name: plan (${{ matrix.env }})
     runs-on: ubuntu-latest
@@ -124,7 +150,7 @@ jobs:
   report:
     name: report (PR comment)
     runs-on: ubuntu-latest
-    needs: [fmt, tflint, trivy, validate, plan]
+    needs: [fmt, tflint, trivy, validate, infracost, plan]
     if: always()
     permissions:
       pull-requests: write
