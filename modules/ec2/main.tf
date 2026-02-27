@@ -24,10 +24,10 @@ resource "aws_instance" "this" {
   instance_type = var.instance_type
   subnet_id     = var.subnet_id
 
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+
   vpc_security_group_ids = [var.security_group_id]
   key_name               = var.enable_ssh ? var.key_name : null
-
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   metadata_options {
     http_endpoint = "enabled"
